@@ -19,13 +19,10 @@ public class Activity1 {
 
     @Test
     void insertTest() {
-        // Check initial size
         assertEquals(2, list.size());
 
-        // Insert new element
         list.add("gamma");
 
-        // Validate size and elements
         assertEquals(3, list.size());
         assertEquals("alpha", list.get(0));
         assertEquals("beta", list.get(1));
@@ -34,11 +31,9 @@ public class Activity1 {
 
     @Test
     void replaceTest() {
-        // Replace element at index 1
         list.set(1, "delta");
-
-        // Validate replaced values
         assertEquals("alpha", list.get(0));
         assertEquals("delta", list.get(1));
     }
 }
+
