@@ -1,0 +1,31 @@
+ Query 1:
+ Salesman and Customer with more than one order
+
+
+SELECT s.name AS salesman_name,
+       c.cust_name AS customer_name,
+       COUNT(o.order_no) AS total_orders
+FROM salesman s
+JOIN orders o ON s.salesman_id = o.salesman_id
+JOIN customer c ON c.customer_id = o.customer_id
+GROUP BY s.name, c.cust_name
+HAVING COUNT(o.order_no) > 1
+ORDER BY salesman_name, customer_name;
+
+ Query 2:
+ Largest and Smallest order by salesman on each date
+
+
+SELECT 
+    o.order_date,
+    s.name AS salesman_name,
+    o.purch_amt,
+    CASE
+        WHEN o.purch_amt = MAX(o.purch_amt) OVER (PARTITION BY o.order_date)
+        THEN 'HIGHEST ON'
+        WHEN o.purch_amt = MIN(o.purch_amt) OVER (PARTITION BY o.order_date)
+        THEN 'LOWEST ON'
+    END AS order_type
+FROM orders o
+JOIN salesman s ON s.salesman_id = o.salesman_id
+ORDER BY o.order_date, o.purch_amt DESC;
