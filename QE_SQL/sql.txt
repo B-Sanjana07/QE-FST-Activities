@@ -1,0 +1,140 @@
+----Activity1------
+CREATE TABLE salesman (
+    salesman_id INT,
+    salesman_name VARCHAR2(20),
+    salesman_city VARCHAR2(20),
+    commission INT
+);
+
+-----Activity2-----
+INSERT INTO salesman VALUES (5001, 'James Hoog', 'New York', 15);
+INSERT INTO salesman VALUES (5002, 'Nail Knite', 'Paris', 13);
+INSERT INTO salesman VALUES (5005, 'Pit Alex', 'London', 11);
+INSERT INTO salesman VALUES (5006, 'McLyon', 'Paris', 14);
+INSERT INTO salesman VALUES (5007, 'Paul Adam', 'Rome', 13);
+INSERT INTO salesman VALUES (5003, 'Lauson Hen', 'San Jose', 12);
+
+SELECT * FROM salesman;
+DELETE FROM salesman
+WHERE ROWID NOT IN (
+    SELECT MIN(ROWID)
+    FROM salesman
+    GROUP BY salesman_id, salesman_name, salesman_city, commission
+);
+
+----Activity3------
+SELECT salesman_id, salesman_city
+FROM salesman;
+
+SELECT *
+FROM salesman
+WHERE salesman_city = 'Paris';
+
+SELECT salesman_id, commission
+FROM salesman
+WHERE salesman_name = 'Paul Adam';
+
+---Activity4---
+ALTER TABLE salesman
+ADD grade INT;
+UPDATE salesman
+SET grade = 100;
+
+COMMIT;
+SELECT * FROM salesman;
+
+---Activity5---
+UPDATE salesman
+SET grade = 200
+WHERE salesman_city = 'Rome';
+
+UPDATE salesman
+SET grade = 300
+WHERE salesman_name = 'James Hoog';
+
+UPDATE salesman
+SET salesman_name = 'McLyon'
+WHERE salesman_name = 'Pierre';
+
+SELECT * FROM salesman;
+
+
+----Activity6---
+-- Create a table named orders
+create table orders(
+    order_no int primary key, purchase_amount float, order_date date,
+    customer_id int, salesman_id int);
+
+-- Add values to the table
+INSERT ALL
+    INTO orders VALUES(70001, 150.5, TO_DATE('2012/10/05', 'YYYY/MM/DD'), 3005, 5002) 
+    INTO orders VALUES(70009, 270.65, TO_DATE('2012/09/10', 'YYYY/MM/DD'), 3001, 5005)
+    INTO orders VALUES(70002, 65.26, TO_DATE('2012/10/05', 'YYYY/MM/DD'), 3002, 5001)
+    INTO orders VALUES(70004, 110.5, TO_DATE('2012/08/17', 'YYYY/MM/DD'), 3009, 5003)
+    INTO orders VALUES(70007, 948.5, TO_DATE('2012/09/10', 'YYYY/MM/DD'), 3005, 5002)
+    INTO orders VALUES(70005, 2400.6, TO_DATE('2012/07/27', 'YYYY/MM/DD'), 3007, 5001)
+    INTO orders VALUES(70008, 5760, TO_DATE('2012/08/15', 'YYYY/MM/DD'), 3002, 5001)
+    INTO orders VALUES(70010, 1983.43, TO_DATE('2012/10/10', 'YYYY/MM/DD'), 3004, 5006)
+    INTO orders VALUES(70003, 2480.4, TO_DATE('2012/10/10', 'YYYY/MM/DD'), 3009, 5003)
+    INTO orders VALUES(70012, 250.45, TO_DATE('2012/06/27', 'YYYY/MM/DD'), 3008, 5002)
+    INTO orders VALUES(70011, 75.29, TO_DATE('2012/08/17', 'YYYY/MM/DD'), 3003, 5007)
+    INTO orders VALUES(70013, 3045.6, TO_DATE('2012/04/25', 'YYYY/MM/DD'), 3002, 5001)
+SELECT 1 FROM DUAL;
+
+SELECT DISTINCT salesman_id
+FROM Orders;
+
+SELECT order_id
+FROM Orders
+ORDER BY order_date ASC;
+
+SELECT order_id
+FROM Orders
+ORDER BY purchase_amount DESC;
+
+SELECT *
+FROM Orders
+WHERE purchase_amount < 500;
+
+SELECT *
+FROM Orders
+WHERE purchase_amount BETWEEN 1000 AND 2000;
+
+
+---Activity7----
+SELECT SUM(purchase_amount) AS total_purchase
+FROM orders;
+
+SELECT AVG(purchase_amount) AS average_purchase
+FROM orders;
+
+SELECT MAX(purchase_amount) AS max_purchase
+FROM orders;
+
+SELECT MIN(purchase_amount) AS min_purchase
+FROM orders;
+
+SELECT COUNT(DISTINCT salesman_id) AS number_of_salesmen
+FROM orders;
+
+
+
+---Activity8----
+
+-- 1. Highest purchase amount by each customer
+SELECT CUSTOMER_ID, MAX(PURCHASE_AMOUNT) AS highest_purchase
+FROM orders
+GROUP BY CUSTOMER_ID;
+
+
+-- 2. Highest purchase on 2012-08-17 for each salesman
+SELECT SALESMAN_ID, MAX(PURCHASE_AMOUNT) AS highest_purchase
+FROM orders
+WHERE ORDER_DATE = DATE '2012-08-17'
+GROUP BY SALESMAN_ID;
+
+-- 3. Highest purchase with customer ID and order date
+SELECT CUSTOMER_ID, ORDER_DATE, MAX(PURCHASE_AMOUNT) AS highest_purchase
+FROM orders
+WHERE PURCHASE_AMOUNT IN (2030, 3450, 5760, 6000)
+GROUP BY CUSTOMER_ID, ORDER_DATE;

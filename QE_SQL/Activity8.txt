@@ -1,0 +1,17 @@
+1. Highest purchase amount by each customer
+SELECT CUSTOMER_ID, MAX(PURCHASE_AMOUNT) AS highest_purchase
+FROM orders
+GROUP BY CUSTOMER_ID;
+
+
+-- 2. Highest purchase on 2012-08-17 for each salesman
+SELECT SALESMAN_ID, MAX(PURCHASE_AMOUNT) AS highest_purchase
+FROM orders
+WHERE ORDER_DATE = DATE '2012-08-17'
+GROUP BY SALESMAN_ID;
+
+-- 3. Highest purchase with customer ID and order date
+SELECT CUSTOMER_ID, ORDER_DATE, MAX(PURCHASE_AMOUNT) AS highest_purchase
+FROM orders
+WHERE PURCHASE_AMOUNT IN (2030, 3450, 5760, 6000)
+GROUP BY CUSTOMER_ID, ORDER_DATE;
