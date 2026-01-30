@@ -12,10 +12,10 @@ GROUP BY s.name, c.cust_name
 HAVING COUNT(o.order_no) > 1
 ORDER BY salesman_name, customer_name;
 
+
+
  Query 2:
  Largest and Smallest order by salesman on each date
-
-
 SELECT 
     o.order_date,
     s.name AS salesman_name,
